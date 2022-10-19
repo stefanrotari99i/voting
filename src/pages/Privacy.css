@@ -1,0 +1,46 @@
+.privacy {
+    margin: 40px auto;
+    max-width: 800px;
+    padding: 0 1rem;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.privacy h1 {
+    font-size: 2rem;
+    font-weight: 600;
+    margin: 1rem 0;
+    color: #fff;
+    font-weight: 700;
+}
+
+.privacy h2, h3 {
+    font-size: 1.2rem;
+    line-height: 1.5;
+    color: #fff;
+}
+
+.privacy p {
+    font-size: 15px;
+    line-height: 1.5;
+    color: #fff;
+}
+
+.privacy a {
+    color: #fff;
+    text-decoration: underline;
+}
+
+.privacy ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.privacy li {
+    margin: 0.5rem 0;
+    color: #fff;
+}

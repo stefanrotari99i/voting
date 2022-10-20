@@ -7,15 +7,19 @@ import {FiExternalLink} from 'react-icons/fi'
 import {getAuth, onAuthStateChanged} from "firebase/auth";
 
 export default function User({name, image, voteCount, user}) {
-    const [vote, setVote] = useState(voteCount)
+    const [vote, setVote] = useState(voteCount.length)
     const [isVoted, setIsVoted] = useState(false)
     const [isLoaded, setIsLoaded] = useState(true)
     const [isAuth, setIsAuth] = useState(false)
-    // make id unique from name
-    const id = name.replace(/\s/g, '').toLowerCase()
 
+    let voteBool = false;
+
+
+    //* make id unique from name
+    const id = name.replace(/\s/g, '').toLowerCase()
     const auth = getAuth();
 
+    //* check if user is logged in
     useEffect(() => {
         onAuthStateChanged(auth, (user) => {
             if (user) {
@@ -27,17 +31,15 @@ export default function User({name, image, voteCount, user}) {
     }, [])
 
 
-    // che
-
-    // vote handler
+    //* Vote handler
     const voteHandler = () => {
         setIsLoaded(false)
         if (isAuth) {
-            if (!isVoted) {  
-                setVote(vote + 1)
+            if (!isVoted) {
                 setIsVoted(true)
                 addVotedUser()
-                setIsLoaded(true)
+                setVote(vote + 1)
+                setIsLoaded(true) 
             }
         } else {
             setIsLoaded(true)
@@ -45,15 +47,19 @@ export default function User({name, image, voteCount, user}) {
         }
     }
 
+    //* Unvote handler
     const unvoteHandler = () => {
         setIsLoaded(false)
         if (isAuth) {
             if (isVoted) {
                 if(vote > 0) {
-                    setVote(vote - 1)
                     setIsVoted(false)
                     removeVotedUser()
+                    setVote(vote - 1)
                     setIsLoaded(true)
+                } else {
+                    setIsLoaded(true)
+                    alert('You cannot unvote')
                 }
             }
         } else {
@@ -62,6 +68,8 @@ export default function User({name, image, voteCount, user}) {
         }
     }
 
+
+    //* update vote count
     useEffect(() => {
         setIsLoaded(false)
         updateData()
@@ -69,7 +77,7 @@ export default function User({name, image, voteCount, user}) {
         setIsLoaded(true)
     }, [vote])
 
-    // update vote count in firebase
+    //* update vote count in firebase
     const updateData = async () => {
         setIsLoaded(false)
         const userRef = doc(db, "users", id);
@@ -77,10 +85,9 @@ export default function User({name, image, voteCount, user}) {
             voteCount: vote
         });
         setIsLoaded(true)
-
     }
 
-    // if user id exists in voted array, set isVoted to true
+    //* if user id exists in voted array, set isVoted to true
     const checkVoted = async () => {
         setIsLoaded(false)
         const userRef = doc(db, "users", id);
@@ -89,45 +96,43 @@ export default function User({name, image, voteCount, user}) {
             const votedArray = userDoc.data().votedUsers
             if (votedArray?.includes(user)) {
                 setIsVoted(true)
-                setIsLoaded(true)
+                setIsLoaded(true) 
             }
+        } else {
+            console.log('no such document')
+            setIsLoaded(true)
+            
+        }
+    }
+
+    //* get count of voted users
+    const getVotedCount = async () => {
+        setIsLoaded(false)
+        const userRef = doc(db, "users", id);
+        const userDoc = await getDoc(userRef);
+        if (userDoc.exists()) {
+            const votedArray = userDoc.data().votedUsers
+            setIsLoaded(true) 
+            return votedArray.length
         } else {
             console.log('no such document')
             setIsLoaded(true)
         }
     }
 
-
-    useEffect(() => {
-        fetchList()
-    }, [])
-
-    const fetchList = async () => {
-        setIsLoaded(false)
-        const userRef = doc(db, "users", id);
-        const docSnap = await getDoc(userRef);
-        if (docSnap.exists()) {
-            setIsLoaded(true)
-        } else {
-            // doc.data() will be undefined in this case
-            console.log("No such document!");
-            setIsLoaded(true)
-        }
-    }
-
+    // * add user to voted array
     const addVotedUser = async () => {
         await updateDoc(doc(db, "users", id), {
             votedUsers: arrayUnion(user)
         })
     }
 
+    //* remove user from voted array
     const removeVotedUser = async () => {
         await updateDoc(doc(db, "users", id), {
             votedUsers: arrayRemove(user)
         })
     }
-
-
 
     return (
         <>

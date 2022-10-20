@@ -19,7 +19,6 @@ export const Main = () => {
     const getUsers = async () => {
       setIsLoaded(false)
       const q = query(collection(db, "users"), orderBy("voteCount", "desc"));
-      // const querySnapshot = await getDocs(collection(db, "users"));
       const querySnapshot = await getDocs(q);
       querySnapshot.forEach((doc) => {
         setUsers((users) => [...users, doc.data()])
@@ -94,9 +93,8 @@ export const Main = () => {
             </div>
             <div className='container'>
                 {isLoaded ? uniqueUsers.map((user) => (
-                <User user={userVote?.uid} name={user.name} image={user.image} voteCount={user.voteCount} />
+                <User user={userVote?.uid} name={user.name} image={user.image} voteCount={user.votedUsers} />
                 )) : <div class="lds-facebook"><div></div><div></div><div></div></div>}
-                
             </div>
             {/* <div className='app__countdown'>
                 <RiTimerLine style={{fontSize: 20, marginRight: 5}}/>

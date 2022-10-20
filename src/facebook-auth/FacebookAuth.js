@@ -13,7 +13,8 @@ export const FacebookAuth = () => {
     const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
     const handleFacebookLogin = () => {
-        isMobile ? signInWithRedirect(auth, provider) : signInWithPopup(auth, provider)
+        // isMobile ? signInWithRedirect(auth, provider) : signInWithPopup(auth, provider)
+        signInWithRedirect(auth, provider)
         .then((result) => {
             const user = result.user;
             // This gives you a Facebook Access Token. You can use it to access the Facebook API.

@@ -7,7 +7,7 @@ import {FiExternalLink} from 'react-icons/fi'
 import {getAuth, onAuthStateChanged} from "firebase/auth";
 
 export default function User({name, image, voteCount, user}) {
-    const [vote, setVote] = useState(voteCount.length)
+    const [vote, setVote] = useState(voteCount)
     const [isVoted, setIsVoted] = useState(false)
     const [isLoaded, setIsLoaded] = useState(true)
     const [isAuth, setIsAuth] = useState(false)

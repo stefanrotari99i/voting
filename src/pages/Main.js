@@ -1,6 +1,6 @@
 import '../App.css';
 import User from '../user/User';
-import { getDocs, query, collection, orderBy} from "firebase/firestore"; 
+import { getDocs, query, collection, orderBy, onSnapshot} from "firebase/firestore"; 
 import {db} from '../firebase/firebase'
 import React, {useState, useEffect} from 'react'
 import { FacebookAuth } from '../facebook-auth/FacebookAuth';
@@ -25,7 +25,7 @@ export const Main = () => {
         setIsLoaded(true)
       });
     }
-  
+
     const auth = getAuth();
     onAuthStateChanged(auth, (user) => {
       if (user) {
@@ -54,15 +54,6 @@ export const Main = () => {
     .map(name => {
       return users.find(user => user.name === name)
     })
-  
-    let endDate = new Date("2022-10-24T00:00:00")
-    let today = new Date()
-    let timeLeft = (endDate - today) / 1000
-  
-    let days = Math.floor(timeLeft / 86400)
-  
-  
-  
   
     return (
         <div className="App">
@@ -96,12 +87,6 @@ export const Main = () => {
                 <User user={userVote?.uid} name={user.name} image={user.image} voteCount={user.votedUsers} />
                 )) : <div class="lds-facebook"><div></div><div></div><div></div></div>}
             </div>
-            {/* <div className='app__countdown'>
-                <RiTimerLine style={{fontSize: 20, marginRight: 5}}/>
-                <span className='app__countdown-text'>Mai sunt doar </span>
-                <span className='app__countdown-days'>{days} zile</span>
-                <span className='app__countdown-text'> până la finalul concursului</span>
-            </div> */}
             <footer className='footer'>
                 <span className='footer__text'>© 2022 Erasmus+ UPET</span>
                 <div className='footer__links'>

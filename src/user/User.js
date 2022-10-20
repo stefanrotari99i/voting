@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import './User.css'
-import { getDoc, getDocs, setDoc, doc, query, collection, where, updateDoc, arrayUnion, arrayRemove} from "firebase/firestore"; 
+import { getDoc, getDocs, setDoc, doc, query, collection, where, updateDoc, arrayUnion, arrayRemove, onSnapshot} from "firebase/firestore"; 
 import {db} from '../firebase/firebase'
 import {BiDownvote, BiUpvote} from 'react-icons/bi'
 import {FiExternalLink} from 'react-icons/fi'
@@ -86,6 +86,11 @@ export default function User({name, image, voteCount, user}) {
         });
         setIsLoaded(true)
     }
+
+    // * update voted users on change
+    onSnapshot(doc(db, "users", id), (doc) => {
+        setVote(doc.data().voteCount)
+    });
 
     //* if user id exists in voted array, set isVoted to true
     const checkVoted = async () => {

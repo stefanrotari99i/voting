@@ -75,7 +75,7 @@
 @media (max-width: 550px) {
   .header__container {
     flex-direction: row;
-    padding-top: 20px;
+    padding-top: 5px;
   }
 
   .header__logo {

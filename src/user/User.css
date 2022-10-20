@@ -12,9 +12,8 @@
     will-change: transform;
     counter-increment: user;
     z-index: 2;
+
 }
-
-
 
 .user:nth-child(1)::after, .user:nth-child(2)::after, .user:nth-child(3)::after {
     content: counter(user);
@@ -28,6 +27,7 @@
     font-size: 300px;
     margin: 5px 10px;
     font-weight: 800;
+    pointer-events: none;
 }
 
 .user:hover {

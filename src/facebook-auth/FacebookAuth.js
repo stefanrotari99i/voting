@@ -8,11 +8,9 @@ const auth = getAuth();
 export const FacebookAuth = () => {
     
     const provider = new FacebookAuthProvider();
-
-    // checl if is mobile or desktop
-    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-
+    
     const handleFacebookLogin = () => {
+        const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
         isMobile ? signInWithRedirect(auth, provider) : signInWithPopup(auth, provider)
         .then((result) => {
             const user = result.user;

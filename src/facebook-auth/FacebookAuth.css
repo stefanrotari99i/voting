@@ -66,3 +66,11 @@
     justify-content: center;
     gap: 5px;
 }
+
+.facebook-auth__button:hover {
+    background-color: #2d4373;
+}
+
+.facebook-auth__button:active {
+    background-color: #2d4373;
+}

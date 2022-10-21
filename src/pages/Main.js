@@ -54,6 +54,7 @@ export const Main = () => {
     .map(name => {
       return users.find(user => user.name === name)
     })
+
   
     return (
         <div className="App">
@@ -63,8 +64,8 @@ export const Main = () => {
                 {isAuth &&
                 <div className='header__container'>
                 <div className='header__user-info'>
-                    <img className='header__image' src={userVote.photoURL} />
-                    <span className='header__name'>{userVote.reloadUserInfo.displayName}</span>
+                    <img className='header__image' src={userVote?.photoURL} />
+                    <span className='header__name'>{userVote?.reloadUserInfo?.displayName}</span>
                 </div>
                 <img className='header__logo' src={require('../assets/logo.png')} onClick={handleSignOut} />
                 <button onClick={handleSignOut} className='header__button'><FiLogOut style={{fontSize: 18}}/><span>Deconectați-vă</span></button>
@@ -84,7 +85,7 @@ export const Main = () => {
             </div>
             <div className='container'>
                 {isLoaded ? uniqueUsers.map((user) => (
-                <User user={userVote?.uid} name={user.name} image={user.image} voteCount={user.voteCount} />
+                <User user={userVote?.uid} name={user?.name} image={user?.image} voteCount={user?.voteCount} />
                 )) : <div class="lds-facebook"><div></div><div></div><div></div></div>}
             </div>
             <footer className='footer'>

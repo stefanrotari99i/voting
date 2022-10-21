@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import './User.css'
-import { getDoc, getDocs, setDoc, doc, query, collection, where, updateDoc, arrayUnion, arrayRemove, onSnapshot} from "firebase/firestore"; 
+import { getDoc, doc, updateDoc, arrayUnion, arrayRemove, onSnapshot} from "firebase/firestore"; 
 import {db} from '../firebase/firebase'
 import {BiDownvote, BiUpvote} from 'react-icons/bi'
 import {FiExternalLink} from 'react-icons/fi'
@@ -8,12 +8,10 @@ import {getAuth, onAuthStateChanged} from "firebase/auth";
 
 export default function User({name, image, voteCount, user}) {
     const [vote, setVote] = useState(voteCount)
+    const [buttonLoaded, setButtonLoaded] = useState(false)
     const [isVoted, setIsVoted] = useState(false)
     const [isLoaded, setIsLoaded] = useState(true)
     const [isAuth, setIsAuth] = useState(false)
-
-    let voteBool = false;
-
 
     //* make id unique from name
     const id = name.replace(/\s/g, '').toLowerCase()
@@ -28,44 +26,56 @@ export default function User({name, image, voteCount, user}) {
                 setIsAuth(false)
             }
         });
+        setTimeout(() => {
+            setButtonLoaded(true)
+        }, 1200)
     }, [])
-
 
     //* Vote handler
     const voteHandler = () => {
-        setIsLoaded(false)
-        if (isAuth) {
-            if (!isVoted) {
-                setIsVoted(true)
-                addVotedUser()
-                setVote(vote + 1)
-                setIsLoaded(true) 
+        try {
+            setIsLoaded(false)
+            if (isAuth) {
+                if (!isVoted) {
+                    setIsVoted(true)
+                    addVotedUser()
+                    setVote(vote + 1)
+                    setIsLoaded(true) 
+                }
+            } else {
+                setIsLoaded(true)
+                alert('You must be logged in to vote')
             }
-        } else {
-            setIsLoaded(true)
-            alert('You must be logged in to vote')
+        } catch (error) {
+            console.log(error)
         }
+
     }
 
     //* Unvote handler
     const unvoteHandler = () => {
-        setIsLoaded(false)
-        if (isAuth) {
-            if (isVoted) {
-                if(vote > 0) {
-                    setIsVoted(false)
-                    removeVotedUser()
-                    setVote(vote - 1)
-                    setIsLoaded(true)
-                } else {
-                    setIsLoaded(true)
-                    alert('You cannot unvote')
+        try {
+            setIsLoaded(false)
+            if (isAuth) {
+                if (isVoted) {
+                    if(vote > 0) {
+                        setIsVoted(false)
+                        removeVotedUser()
+                        setVote(vote - 1)
+                        setIsLoaded(true)
+                    } else {
+                        setIsLoaded(true)
+                        alert('You cannot unvote')
+                    }
                 }
+            } else {
+                setIsLoaded(true)
+                alert('You must be logged in to vote')
             }
-        } else {
-            setIsLoaded(true)
-            alert('You must be logged in to vote')
+        } catch (error) {
+            console.log(error)
         }
+
     }
 
 
@@ -79,64 +89,79 @@ export default function User({name, image, voteCount, user}) {
 
     //* update vote count in firebase
     const updateData = async () => {
-        setIsLoaded(false)
-        const userRef = doc(db, "users", id);
-        await updateDoc(userRef, {
-            voteCount: vote
-        });
-        setIsLoaded(true)
+        try {
+            const userRef = doc(db, "users", id);
+            await updateDoc(userRef, {
+                voteCount: vote
+            });
+        } catch (error) {
+            console.log(error)
+        }
     }
 
     // * update voted users on change
     onSnapshot(doc(db, "users", id), (doc) => {
-        setVote(doc.data().voteCount)
-    });
-
-    //* if user id exists in voted array, set isVoted to true
-    const checkVoted = async () => {
-        setIsLoaded(false)
-        const userRef = doc(db, "users", id);
-        const userDoc = await getDoc(userRef);
-        if (userDoc.exists()) {
-            const votedArray = userDoc.data().votedUsers
-            if (votedArray?.includes(user)) {
+        if(doc.exists()) {
+            if(doc.data().votedUsers.includes(user)) {
                 setIsVoted(true)
-                setIsLoaded(true) 
+                setVote(doc.data().voteCount)
+            } else {
+                setIsVoted(false)
+                setVote(doc.data().voteCount)
             }
         } else {
-            console.log('no such document')
-            setIsLoaded(true)
-            
+            console.log('No such document!')
         }
-    }
 
-    //* get count of voted users
-    const getVotedCount = async () => {
+    });
+
+    // //* if user id exists in voted array, set isVoted to true
+    const checkVoted = async () => {
         setIsLoaded(false)
-        const userRef = doc(db, "users", id);
-        const userDoc = await getDoc(userRef);
-        if (userDoc.exists()) {
-            const votedArray = userDoc.data().votedUsers
-            setIsLoaded(true) 
-            return votedArray.length
-        } else {
-            console.log('no such document')
+        try {
+            const userRef = doc(db, "users", id);
+            const userDoc = await getDoc(userRef);
+            if (userDoc.exists()) {
+                const votedArray = userDoc.data().votedUsers
+                if (votedArray?.includes(user)) {
+                    setIsVoted(true)
+                    setIsLoaded(true) 
+                } else {
+                    setIsVoted(false)
+                    setIsLoaded(true) 
+                }
+            } else {
+                console.log('no such document')
+                setIsLoaded(true) 
+            }
+        } catch (error) {
+            console.log(error)
             setIsLoaded(true)
         }
     }
+    
 
     // * add user to voted array
     const addVotedUser = async () => {
-        await updateDoc(doc(db, "users", id), {
-            votedUsers: arrayUnion(user)
-        })
+        try {
+            await updateDoc(doc(db, "users", id), {
+                votedUsers: arrayUnion(user)
+            })
+        } catch (error) {
+            console.log(error)
+        }
+
     }
 
     //* remove user from voted array
     const removeVotedUser = async () => {
-        await updateDoc(doc(db, "users", id), {
-            votedUsers: arrayRemove(user)
-        })
+        try {
+            await updateDoc(doc(db, "users", id), {
+                votedUsers: arrayRemove(user)
+            })
+        } catch (error) {
+            console.log(error)
+        }
     }
 
     return (
@@ -157,7 +182,23 @@ export default function User({name, image, voteCount, user}) {
                     <div className='user__additional-wrapper'>
                         <a href='#' className='user__info-link'><FiExternalLink /> Vezi postarea</a>
                     </div>
-                    {isVoted ? <button className='user__btn user__btn--unvote' disable={isLoaded ? 'false' : 'true'} onClick={unvoteHandler}><BiDownvote className='btn__icon' /> Retrage votul</button> : <button className='user__btn' disable={isLoaded ? 'false' : 'true'} onClick={voteHandler}><BiUpvote className='btn__icon' /> Voteaza</button>}
+                    {isVoted ? 
+                    <button 
+                        className='user__btn user__btn--unvote' 
+                        disabled={buttonLoaded ? false : true} 
+                        onClick={unvoteHandler}><BiDownvote className='btn__icon' 
+                    /> 
+                        {buttonLoaded ? 'Retrage votul' : 'Se incarca...'}
+                    </button> 
+                    : 
+                    <button 
+                        className='user__btn'
+                        disabled={buttonLoaded ? false : true}
+                        onClick={voteHandler}><BiUpvote 
+                        className='btn__icon' 
+                    />  
+                    {buttonLoaded ? 'Voteaza' : 'Se incarca...'}
+                    </button>}
                 </div>
             ) : ( <div class="lds-facebook"><div></div><div></div><div></div></div> )}
         </>

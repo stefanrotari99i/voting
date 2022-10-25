@@ -8,11 +8,13 @@ import {
   Route,
   Routes
 } from "react-router-dom";
+import { Close } from './not/Close';
 
 function App() {
   return (
     <>
-      <Main />
+    <Close />
+      {/* <Main /> */}
     </>
   );
 }

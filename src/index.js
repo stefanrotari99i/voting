@@ -11,13 +11,15 @@ import {
   Routes
 } from "react-router-dom";
 
+import {Close} from './not/Close'
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <Router>
       <Routes>
-          <Route exact index element={<Main />} />
-          <Route path="*" element={<Main />} />
+          <Route exact index element={<Close />} />
+          <Route path="*" element={<Close />} />
           <Route exact path="/privacy" element={<Privacy />} />
           <Route exact path="/delete" element={<Delete />} />
       </Routes>

@@ -15,7 +15,7 @@ function ResultItem({name, voteCount, image}) {
       />
       <div className="result__info">
         <h2 className="result__name">{name}</h2>
-        <span className="result__vote">Voturi: {voteCount}</span>
+        <p className="result__vote">Voturi: <span>{voteCount}</span></p>
       </div>
     </div>
   );

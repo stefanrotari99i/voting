@@ -4,7 +4,7 @@ import React from 'react'
 export const Close = () => {
 
     // count down timer to 26th
-    const countDownDate = new Date("Oct 26, 2022 09:00:00").getTime();
+    const countDownDate = new Date("Oct 26, 2022 13:30:00").getTime();
 
     // Update the count down every 1 second
     const x = setInterval(function() {

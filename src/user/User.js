@@ -7,7 +7,7 @@ import {FiExternalLink} from 'react-icons/fi'
 import {getAuth, onAuthStateChanged} from "firebase/auth";
 
 export default function User({name, image, voteCount, user, post, country, city}) {
-    // const [vote, setVote] = useState(voteCount)
+    const [vote, setVote] = useState(0)
     const [buttonLoaded, setButtonLoaded] = useState(false)
     const [isVoted, setIsVoted] = useState(true)
     const [isLoaded, setIsLoaded] = useState(true)
@@ -27,6 +27,7 @@ export default function User({name, image, voteCount, user, post, country, city}
                 setIsAuth(false)
             }
         });
+        setVote(voteCount.length)
         updateData()
         setTimeout(() => {
             setButtonLoaded(true)
@@ -55,34 +56,34 @@ export default function User({name, image, voteCount, user, post, country, city}
     }
 
     //* Unvote handler
-    const unvoteHandler = () => {
-        try {
-            setIsLoaded(false)
-            if (isAuth) {
-                if (isVoted) {
-                    setIsVoted(false)
-                    removeVotedUser()
-                    // setVote(vote - 1)
-                    setIsLoaded(true)
-                    // if(vote > 0) {
-                    //     setIsVoted(false)
-                    //     removeVotedUser()
-                    //     // setVote(vote - 1)
-                    //     setIsLoaded(true)
-                    // } else {
-                    //     setIsLoaded(true)
-                    //     alert('You cannot unvote')
-                    // }
-                }
-            } else {
-                setIsLoaded(true)
-                alert('You must be logged in to vote')
-            }
-        } catch (error) {
-            console.log(error)
-        }
+    // const unvoteHandler = () => {
+    //     try {
+    //         setIsLoaded(false)
+    //         if (isAuth) {
+    //             if (isVoted) {
+    //                 setIsVoted(false)
+    //                 removeVotedUser()
+    //                 // setVote(vote - 1)
+    //                 setIsLoaded(true)
+    //                 // if(vote > 0) {
+    //                 //     setIsVoted(false)
+    //                 //     removeVotedUser()
+    //                 //     // setVote(vote - 1)
+    //                 //     setIsLoaded(true)
+    //                 // } else {
+    //                 //     setIsLoaded(true)
+    //                 //     alert('You cannot unvote')
+    //                 // }
+    //             }
+    //         } else {
+    //             setIsLoaded(true)
+    //             alert('You must be logged in to vote')
+    //         }
+    //     } catch (error) {
+    //         console.log(error)
+    //     }
 
-    }
+    // }
 
 
 
@@ -100,10 +101,10 @@ export default function User({name, image, voteCount, user, post, country, city}
 
     // * update voted users on change
     onSnapshot(doc(db, "users", id), (doc) => {
+        setVote(doc.data().votedUsers.length)
         if(doc.exists()) {
             if(doc.data().votedUsers.includes(user)) {
                 setIsVoted(true)
-                // setVote(doc.data().voteCount)
             } else {
                 setIsVoted(false)
                 // setVote(doc.data().voteCount)
@@ -115,29 +116,29 @@ export default function User({name, image, voteCount, user, post, country, city}
     });
 
     // //* if user id exists in voted array, set isVoted to true
-    const checkVoted = async () => {
-        setIsLoaded(false)
-        try {
-            const userRef = doc(db, "users", id);
-            const userDoc = await getDoc(userRef);
-            if (userDoc.exists()) {
-                const votedArray = userDoc.data().votedUsers
-                if (votedArray?.includes(user)) {
-                    setIsVoted(true)
-                    setIsLoaded(true) 
-                } else {
-                    setIsVoted(false)
-                    setIsLoaded(true) 
-                }
-            } else {
-                console.log('no such document')
-                setIsLoaded(true) 
-            }
-        } catch (error) {
-            console.log(error)
-            setIsLoaded(true)
-        }
-    }
+    // const checkVoted = async () => {
+    //     setIsLoaded(false)
+    //     try {
+    //         const userRef = doc(db, "users", id);
+    //         const userDoc = await getDoc(userRef);
+    //         if (userDoc.exists()) {
+    //             const votedArray = userDoc.data().votedUsers
+    //             if (votedArray?.includes(user)) {
+    //                 setIsVoted(true)
+    //                 setIsLoaded(true) 
+    //             } else {
+    //                 setIsVoted(false)
+    //                 setIsLoaded(true) 
+    //             }
+    //         } else {
+    //             console.log('no such document')
+    //             setIsLoaded(true) 
+    //         }
+    //     } catch (error) {
+    //         console.log(error)
+    //         setIsLoaded(true)
+    //     }
+    // }
     
 
     // * add user to voted array
@@ -149,23 +150,18 @@ export default function User({name, image, voteCount, user, post, country, city}
         } catch (error) {
             console.log(error)
         }
-
     }
 
     //* remove user from voted array
-    const removeVotedUser = async () => {
-        try {
-            await updateDoc(doc(db, "users", id), {
-                votedUsers: arrayRemove(user)
-            })
-        } catch (error) {
-            console.log(error)
-        }
-    }
-
-
-    console.log(lenght)
-
+    // const removeVotedUser = async () => {
+    //     try {
+    //         await updateDoc(doc(db, "users", id), {
+    //             votedUsers: arrayRemove(user)
+    //         })
+    //     } catch (error) {
+    //         console.log(error)
+    //     }
+    // }
 
     return (
         <>
@@ -179,7 +175,7 @@ export default function User({name, image, voteCount, user, post, country, city}
                                 <p className='user__info-text'>{country}</p>
                                 <p className='user__info-text'>{city}</p>
                             </div>
-                            <p className='user__voting'>Voturi: <span id='count' className='user__voting--number'>{lenght}</span></p>
+                            <p className='user__voting'>Voturi: <span id='count' className='user__voting--number'>{vote}</span></p>
                         </div>
                     </div>
                     <div className='user__additional-wrapper'>

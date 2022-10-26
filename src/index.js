@@ -12,6 +12,7 @@ import {
 } from "react-router-dom";
 
 import {Close} from './not/Close'
+import Result from './pages/Result';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -19,6 +20,7 @@ root.render(
       <Routes>
           <Route exact index element={<Main />} />
           <Route path="*" element={<Main />} />
+          {/* <Route path="/result" element={<Result />} /> */}
           <Route exact path="/privacy" element={<Privacy />} />
           <Route exact path="/delete" element={<Delete />} />
       </Routes>

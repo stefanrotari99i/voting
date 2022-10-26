@@ -13,8 +13,8 @@ import { Close } from './not/Close';
 function App() {
   return (
     <>
-    <Close />
-      {/* <Main /> */}
+    {/* <Close /> */}
+      <Main />
     </>
   );
 }

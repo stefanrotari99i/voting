@@ -18,8 +18,8 @@ root.render(
   <React.StrictMode>
     <Router>
       <Routes>
-          <Route exact index element={<Close />} />
-          <Route path="*" element={<Close />} />
+          <Route exact index element={<Main />} />
+          <Route path="*" element={<Main />} />
           <Route exact path="/privacy" element={<Privacy />} />
           <Route exact path="/delete" element={<Delete />} />
       </Routes>

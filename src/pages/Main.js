@@ -76,17 +76,14 @@ export const Main = () => {
             <span className='app__subtitle'>Votează pentru studentul tău Erasmus+ preferat</span>
             <div className='app__social-wrapper'>
                 <ul className='app__social'>
-                <li><a href="https://www.facebook.com/erasmusupet/" target="_blank">
+                <li><a href="https://www.facebook.com/erasmus.plus.upet" target="_blank">
                     <FaFacebookSquare style={{fontSize: 30, color: 'white'}}/>
-                </a></li>
-                <li><a href="https://www.facebook.com/erasmusupet/" target="_blank">
-                    <AiFillInstagram style={{fontSize: 30, color: 'white'}}/>
-                </a></li>
+                </a></li> 
                 </ul>
             </div>
             <div className='container'>
                 {isLoaded ? uniqueUsers.map((user) => (
-                <User user={userVote?.uid} name={user?.name} image={user?.image} voteCount={user?.voteCount} />
+                <User user={userVote?.uid} post={user?.post} country={user?.country} city={user?.city} name={user?.name} image={user?.image} voteCount={user?.voteCount} />
                 )) : <div class="lds-facebook"><div></div><div></div><div></div></div>}
             </div>
             <footer className='footer'>

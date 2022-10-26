@@ -20,7 +20,7 @@ root.render(
       <Routes>
           <Route exact index element={<Main />} />
           <Route path="*" element={<Main />} />
-          {/* <Route path="/result" element={<Result />} /> */}
+          <Route path="/result" element={<Result />} />
           <Route exact path="/privacy" element={<Privacy />} />
           <Route exact path="/delete" element={<Delete />} />
       </Routes>

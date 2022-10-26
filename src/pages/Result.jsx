@@ -1,23 +1,46 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import "./Result.css";
+import {query, collection, getDocs, orderBy, onSnapshot} from "firebase/firestore";
+import {db} from "../firebase/firebase";
 
-function ResultItem() {
+
+
+function ResultItem({name, voteCount, image}) {
   return (
     <div className="result__item">
       <img
-        src="https://wac-cdn.atlassian.com/dam/jcr:ba03a215-2f45-40f5-8540-b2015223c918/Max-R_Headshot%20(1).jpg?cdnVersion=604"
+        src={image}
         alt="result"
         className="result__img"
       />
       <div className="result__info">
-        <h2 className="result__name">Rotari Stefan</h2>
-        <span className="result__vote">Voturi: 22</span>
+        <h2 className="result__name">{name}</h2>
+        <span className="result__vote">Voturi: {voteCount}</span>
       </div>
     </div>
   );
 }
 
 const Result = (props) => {
+    const [results, setResults] = useState([]);
+    const [isLoaded, setIsLoaded] = useState(true);
+    const getUsers = async () => {
+        setIsLoaded(false)
+        const q = query(collection(db, "users"), orderBy("voteCount", "desc"));
+        const querySnapshot = await getDocs(q);
+        querySnapshot.forEach((doc) => {
+            setResults((users) => [...users, doc.data()])
+            setIsLoaded(true)
+        });
+    }
+
+    useEffect(() => {
+        getUsers()
+    }, [])
+
+
+
+
   return (
     <div className="container container--result">
         <header className="result__header">
@@ -25,10 +48,14 @@ const Result = (props) => {
             <h2 className="result__title">Rezultate Pașaport pentru Erasmus</h2>
         </header>
         <div className="result__items">
-            <ResultItem />
-            <ResultItem />
-            <ResultItem />
-            <ResultItem />
+            {isLoaded ? results.map((result, index) => (
+                <ResultItem
+                    key={index}
+                    name={result.name}
+                    voteCount={result.voteCount}
+                    image={result.image}
+                />
+            )) : <div class="lds-facebook"><div></div><div></div><div></div></div>}
         </div>
     </div>
   );

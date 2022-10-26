@@ -36,13 +36,12 @@
     content: counter(user);
     position: absolute;
     top: 40%;
-    left: -50px;
+    left: -85px;
     transform: translate(-50%, -50%);
     z-index: 2;
     color: transparent;
     /* text outline */
     -webkit-text-stroke: 1px #fff;
-
     opacity: 0.6;
     font-size: 100px;
     margin: 5px 10px;
@@ -58,7 +57,7 @@
 }
 
 .result__name {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     font-weight: 700;
     margin-bottom: 5px;
     text-transform: uppercase;
@@ -82,4 +81,11 @@
     gap: 0;
     margin-bottom: 1rem;
     margin-top: 0;
+    text-align: center;
+}
+
+.result__items {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }

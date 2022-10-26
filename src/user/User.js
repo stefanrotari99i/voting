@@ -9,7 +9,7 @@ import {getAuth, onAuthStateChanged} from "firebase/auth";
 export default function User({name, image, voteCount, user, post, country, city}) {
     const [vote, setVote] = useState(voteCount)
     const [buttonLoaded, setButtonLoaded] = useState(false)
-    const [isVoted, setIsVoted] = useState(false)
+    const [isVoted, setIsVoted] = useState(true)
     const [isLoaded, setIsLoaded] = useState(true)
     const [isAuth, setIsAuth] = useState(false)
 
@@ -182,7 +182,7 @@ export default function User({name, image, voteCount, user, post, country, city}
                     <div className='user__additional-wrapper'>
                         <a href={post} className='user__info-link'><FiExternalLink /> Vezi postarea</a>
                     </div>
-                    {isVoted ? 
+                    {/* {isVoted ? 
                     <button 
                         className='user__btn user__btn--unvote' 
                         disabled={buttonLoaded ? false : true} 
@@ -190,15 +190,15 @@ export default function User({name, image, voteCount, user, post, country, city}
                     /> 
                         {buttonLoaded ? 'Retrage votul' : 'Se incarca...'}
                     </button> 
-                    : 
+                    :  */}
                     <button 
                         className='user__btn'
-                        disabled={buttonLoaded ? false : true}
+                        disabled={isVoted ? true : false}
                         onClick={voteHandler}><BiUpvote 
                         className='btn__icon' 
                     />  
                     {buttonLoaded ? 'Voteaza' : 'Se incarca...'}
-                    </button>}
+                    </button>
                 </div>
             ) : ( <div class="lds-facebook"><div></div><div></div><div></div></div> )}
         </>

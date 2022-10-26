@@ -176,7 +176,7 @@ export default function User({name, image, voteCount, user, post, country, city}
                                 <p className='user__info-text'>{country}</p>
                                 <p className='user__info-text'>{city}</p>
                             </div>
-                            <p className='user__voting'>Voturi: <span id='count' className='user__voting--number'>{vote}</span></p>
+                            <p className='user__voting'>Voturi: <span id='count' className='user__voting--number'>Se incarca...</span></p>
                         </div>
                     </div>
                     <div className='user__additional-wrapper'>

@@ -32,6 +32,36 @@
     position: relative;
 }
 
+.result__item:nth-child(odd) {
+    animation: slideLeft 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.result__item:nth-child(even) {
+    animation: slideRight 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes slideLeft {
+    0% {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    100% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideRight {
+    0% {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+    100% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
 .result__item::before {
     content: counter(user);
     position: absolute;

@@ -83,7 +83,7 @@ export const Main = () => {
             </div>
             <div className='container'>
                 {isLoaded ? uniqueUsers.map((user) => (
-                <User user={userVote?.uid} post={user?.post} country={user?.country} city={user?.city} name={user?.name} image={user?.image} voteCount={user?.voteCount} />
+                <User user={userVote?.uid} post={user?.post} country={user?.country} city={user?.city} name={user?.name} image={user?.image} voteCount={user?.votedUsers} />
                 )) : <div class="lds-facebook"><div></div><div></div><div></div></div>}
             </div>
             <footer className='footer'>

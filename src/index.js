@@ -15,7 +15,6 @@ import {Close} from './not/Close'
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
     <Router>
       <Routes>
           <Route exact index element={<Main />} />
@@ -24,6 +23,5 @@ root.render(
           <Route exact path="/delete" element={<Delete />} />
       </Routes>
     </Router>
-  </React.StrictMode>
 );
 

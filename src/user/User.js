@@ -12,6 +12,7 @@ export default function User({name, image, voteCount, user, post, country, city}
     const [isVoted, setIsVoted] = useState(true)
     const [isLoaded, setIsLoaded] = useState(true)
     const [isAuth, setIsAuth] = useState(false)
+    const lenght = voteCount.length
 
     //* make id unique from name
     const id = name.replace(/\s/g, '').toLowerCase()
@@ -26,6 +27,7 @@ export default function User({name, image, voteCount, user, post, country, city}
                 setIsAuth(false)
             }
         });
+        updateData()
         setTimeout(() => {
             setButtonLoaded(true)
         }, 1200)
@@ -83,25 +85,18 @@ export default function User({name, image, voteCount, user, post, country, city}
     }
 
 
-    //* update vote count
-    // useEffect(() => {
-    //     setIsLoaded(false)
-    //     // updateData()
-    //     checkVoted()
-    //     setIsLoaded(true)
-    // }, [vote])
 
     //* update vote count in firebase
-    // const updateData = async () => {
-    //     try {
-    //         const userRef = doc(db, "users", id);
-    //         await updateDoc(userRef, {
-    //             voteCount: vote
-    //         });
-    //     } catch (error) {
-    //         console.log(error)
-    //     }
-    // }
+    const updateData = async () => {
+        try {
+            const userRef = doc(db, "users", id);
+            await updateDoc(userRef, {
+                voteCount: lenght
+            });
+        } catch (error) {
+            console.log(error)
+        }
+    }
 
     // * update voted users on change
     onSnapshot(doc(db, "users", id), (doc) => {
@@ -168,6 +163,10 @@ export default function User({name, image, voteCount, user, post, country, city}
         }
     }
 
+
+    console.log(lenght)
+
+
     return (
         <>
             {isLoaded ? (
@@ -180,7 +179,7 @@ export default function User({name, image, voteCount, user, post, country, city}
                                 <p className='user__info-text'>{country}</p>
                                 <p className='user__info-text'>{city}</p>
                             </div>
-                            {/* <p className='user__voting'>Voturi: <span id='count' className='user__voting--number'>{vote}</span></p> */}
+                            <p className='user__voting'>Voturi: <span id='count' className='user__voting--number'>{lenght}</span></p>
                         </div>
                     </div>
                     <div className='user__additional-wrapper'>

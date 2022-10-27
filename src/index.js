@@ -18,8 +18,8 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     <Router>
       <Routes>
-          <Route exact index element={<Main />} />
-          <Route path="*" element={<Main />} />
+          <Route exact index element={<Close />} />
+          <Route path="*" element={<Close />} />
           <Route path="/result" element={<Result />} />
           <Route exact path="/privacy" element={<Privacy />} />
           <Route exact path="/delete" element={<Delete />} />

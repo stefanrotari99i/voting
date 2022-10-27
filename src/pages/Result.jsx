@@ -57,6 +57,13 @@ const Result = (props) => {
                 />
             )) : <div class="lds-facebook"><div></div><div></div><div></div></div>}
         </div>
+        <footer className='footer'>
+                <span className='footer__text'>© 2022 Erasmus+ UPET</span>
+                <div className='footer__links'>
+                    <a href='/delete' className='footer__link'>Solicitare de ștergere a datelor cu caracter personal</a>
+                    <a href='/privacy' className='footer__link'>Politica de confidențialitate</a>
+                </div>
+            </footer>
     </div>
   );
 };
